@@ -1,0 +1,127 @@
+{
+    "window.zoomLevel": 1,
+    "workbench.colorTheme": "Solarized Dark",
+    "workbench.statusBar.feedback.visible": false,
+    "python.pythonPath": "/Users/sazary/.virtualenvs/miare",
+    "python.venvFolders": [
+        "envs",
+        ".pyenv",
+        ".direnv",
+        ".virtualenvs"
+    ],
+    "python.venvPath": "/Users/sazary",
+    "gitlens.advanced.messages": {
+        "suppressResultsExplorerNotice": true,
+        "suppressShowKeyBindingsNotice": true
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.pyc": true
+    },
+    "editor.renderIndentGuides": false,
+    "extensions.ignoreRecommendations": false,
+    "git.confirmSync": false,
+    "diffEditor.renderSideBySide": true,
+    "editor.minimap.enabled": false,
+    "explorer.confirmDelete": false,
+    "files.associations": {
+        "*.yml": "ansible"
+    },
+    "explorer.confirmDragAndDrop": false,
+    "trailing-spaces.trimOnSave": true,
+    "trailing-spaces.deleteModifiedLinesOnly": true,
+    "trailing-spaces.syntaxIgnore": [
+        "markdown"
+    ],
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "todohighlight.include": [
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.html",
+        "**/*.php",
+        "**/*.css",
+        "**/*.scss",
+        "**/*.yml",
+        "**/*.yaml",
+        "**/*.py",
+        "**/*.go"
+    ],
+    "todohighlight.isEnable": false,
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "vim.easymotion": true,
+    "vim.leader": ",",
+    "vim.statusBarColorControl": true,
+    "vim.easymotionKeys": "jkl;asdf",
+    "editor.fontFamily": "'Fira Code', 'Anonymous Pro', Inconsolata, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontSize": 13,
+    "editor.fontWeight": "500",
+    "editor.fontLigatures": true,
+    "vim.easymotionMarkerFontFamily": "Inconsolata",
+    "vim.easymotionMarkerHeight": 20,
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": [">"],
+            "commands": ["editor.action.indentLines"]
+        },
+        {
+            "before": ["<"],
+            "commands": ["editor.action.outdentLines"]
+        }
+    ],
+    "terminal.integrated.fontSize": 14,
+    "gitlens.codeLens.scopes": [
+        "containers",
+        "blocks"
+    ],
+    "gitlens.blame.heatmap.location": "left",
+    "gitlens.codeLens.enabled": false,
+    "gitlens.statusBar.format": "${authorAgoOrDate} • ${message}",
+    "gitlens.statusBar.alignment": "left",
+    "gitlens.statusBar.command": "gitlens.showQuickFileHistory",
+    "gitlens.historyExplorer.enabled": false,
+    "workbench.startupEditor": "newUntitledFile",
+    "cSpell.enabledLanguageIds": [
+        "ansible",
+        "asciidoc",
+        "c",
+        "cpp",
+        "csharp",
+        "css",
+        "go",
+        "handlebars",
+        "html",
+        "jade",
+        "javascript",
+        "javascriptreact",
+        "json",
+        "latex",
+        "less",
+        "markdown",
+        "php",
+        "plaintext",
+        "pub",
+        "python",
+        "restructuredtext",
+        "rust",
+        "scss",
+        "text",
+        "typescript",
+        "typescriptreact",
+        "yml"
+    ],
+    "cSpell.userWords": [
+        "POSTGRES",
+        "mdillon",
+        "miare",
+        "postgis"
+    ],
+    "vim.foldfix": true,
+}
