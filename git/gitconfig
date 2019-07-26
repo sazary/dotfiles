@@ -1,0 +1,47 @@
+[user]
+	email = soroosh@azary.ir
+	name = sazary
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[alias]
+    co = checkout
+    st = status
+    a = add
+    ap = add -p
+    br = branch
+    ll = log -L
+    hist = log --pretty=format:'%Cblue%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)[%an] %Creset' --graph --date=short
+    fhist = log --follow -p
+    type = cat-file -t
+    dump = cat-file -p
+	ci = commit --verbose
+	d = difftool
+	diff = difftool
+    mff = merge --no-ff
+[merge]
+	tool = vimdiff
+[url "https://"]
+	insteadOf = git://
+[push]
+	default = current
+# [https]
+# 	proxy = http://localhost:8123
+# [http]
+# 	proxy = http://localhost:8123
+# 	sslverify = false
+[socks]
+	proxy =
+[core]
+    pager = less
+	filemode = false
+	editor = vim
+[diff]
+	tool = icdiff
+[difftool]
+	prompt = false
+[difftool "icdiff"]
+    cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
+[http]
+	postBuffer = 1048576000
