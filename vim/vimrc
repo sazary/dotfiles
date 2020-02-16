@@ -101,19 +101,21 @@ Plug 'easymotion/vim-easymotion'
 Plug 'udalov/kotlin-vim'
 
 Plug 'zxqfl/tabnine-vim'
+Plug 'davidhalter/jedi-vim'
+
+Plug 'mhinz/vim-startify'
+
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
 filetype plugin indent on     " required
 
+set nohlsearch
+
 " vim go
 nnoremap <leader>gi :GoImplements<CR>
 
-" NERDTree
-nnoremap <leader>nf :NERDTreeFind<CR>
-
-" fix end & home buttons
-set term=xterm-256color
 
 " solarized theme
 syntax enable
@@ -167,7 +169,7 @@ set incsearch
 " ctrl-p
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPMRUFiles' " by default ctrlp opens in mru + files mode
-nnoremap <c-P> :CtrlPBuffer<CR>
+nnoremap <c-P> :CtrlPMRUFiles<CR>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*.pyc,*/vendor/* " ignore shitty files
 
 " ctrlp on enter, open in a tab. on c-e, open in current.
@@ -180,8 +182,11 @@ let g:ctrlp_prompt_mappings = {
 " let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden --ignore .git -g ""'
 
-" nerd tree auto open on start
-autocmd vimenter * if !argc() | NERDTree | endif
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_mruf_relative = 1
+
+" nerd tree close tab when it's the only window
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " nerd tree toggle with c-n
 map <C-n> :NERDTreeToggle<CR>
@@ -190,7 +195,10 @@ map <C-n> :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen = 1
 
 " nerd tree ignore pyc files
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+
+" let NERDTreeMinimalUI = 1
+:let g:NERDTreeWinSize=40
 
 " map Q to repeat last macro
 nnoremap Q @@
@@ -283,7 +291,7 @@ nnoremap <leader>ww :w<CR>
 nnoremap <leader>wa :wa<CR>
 
 " set default register to system clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " loclist shortcuts
 nmap <leader>ln :lnext<CR>
@@ -401,3 +409,8 @@ set undofile             " Persistent undo
 set undodir=~/.vim/undodir
 set undolevels=1000      " Maximum number of changes that can be undone
 set undoreload=10000     " Maximum number lines to save for undo on a buffer reload
+
+autocmd FileType python let g:jedi#goto_definitions_command = "<C-]>"
+
+" automatically save sessions on close
+let g:startify_session_persistence = 1
