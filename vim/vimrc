@@ -275,6 +275,14 @@ nmap <leader>lp :lprev<CR>
 nmap <leader>lo :lopen<CR>
 
 let g:airline#extensions#ale#enabled = 1
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'typescript': ['prettier', 'tslint', 'eslint'],
+\   'go': ['gofmt', 'goimports'],
+\   'python': ['autopep8', 'isort', 'black'],
+\}
+let g:ale_fix_on_save = 1
+
 
 " map autopep8
 autocmd FileType python map <buffer> <leader>pe :call Autopep8<CR>
