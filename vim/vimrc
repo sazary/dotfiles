@@ -1,33 +1,9 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-" set rtp+=~/.vim/bundle/Vundle.vim
-" call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-" Plugin 'VundleVim/Vundle.vim'
-"
 call plug#begin('~/.vim/plugged')
 
 set shell=/bin/bash
-
-" The following are examples of different formats supported.
-" Keep bundle commands between here and filetype plugin indent on.
-" scripts on GitHub repos
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-"Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-" scripts from http://vim-scripts.org/vim/scripts.html
-"Bundle 'FuzzyFinder'
-" scripts not on GitHub
-"Bundle 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-"Bundle 'file:///home/gmarik/path/to/plugin'
-" ...
-"
 
 Plug 'editorconfig/editorconfig-vim'
 
