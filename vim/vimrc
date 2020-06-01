@@ -15,10 +15,10 @@ Plug 'vim-airline/vim-airline-themes'
 
 Plug 'tpope/vim-fugitive'
 Plug 'idanarye/vim-merginal'
+Plug 'junegunn/gv.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tommcdo/vim-fugitive-blame-ext'
-Plug 'rbong/vim-flog'
-Plug 'arkwright/vim-manhunt'
+Plug 'rhysd/committia.vim'
 
 Plug 'bkad/CamelCaseMotion'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -34,7 +34,8 @@ Plug 'w0rp/ale'
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
+Plug 'arcticicestudio/nord-vim'
 
 Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
@@ -44,11 +45,10 @@ Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'othree/html5.vim'
 Plug 'claco/jasmine.vim'
 
-Plug 'leafgarland/typescript-vim'
+Plug 'HerringtonDarkholme/yats.vim'
 Plug 'peitalin/vim-jsx-typescript'
 
 
-Plug 'craigemery/vim-autotag'
 
 Plug 'pycqa/flake8'
 Plug 'hynek/vim-python-pep8-indent'
@@ -62,6 +62,7 @@ Plug 'majutsushi/tagbar'
 Plug 'fatih/vim-go'
 
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 
 Plug 'ekalinin/Dockerfile.vim'
 
@@ -96,7 +97,7 @@ nnoremap <leader>gi :GoImplements<CR>
 " solarized theme
 syntax enable
 set background=dark
-color solarized
+color nord
 
 " airline
 set laststatus=2
@@ -277,11 +278,15 @@ nmap <leader>lo :lopen<CR>
 let g:airline#extensions#ale#enabled = 1
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'typescript': ['prettier', 'tslint', 'eslint'],
+\   'typescript': ['tsserver', 'eslint'],
 \   'go': ['gofmt', 'goimports'],
 \   'python': ['autopep8', 'isort', 'black'],
 \}
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
+let g:ale_javascript_eslint_options = '--cache'
+let g:nvim_typescript#default_mappings = 1
+let g:ale_set_balloons = 1
+let g:nvim_typescript#type_info_on_hold = 1
 
 
 " map autopep8
@@ -398,3 +403,4 @@ autocmd FileType python let g:jedi#goto_definitions_command = "<C-]>"
 
 " automatically save sessions on close
 let g:startify_session_persistence = 1
+let g:startify_change_to_vcs_root = 1
