@@ -3,7 +3,14 @@ filetype off                  " required
 
 call plug#begin('~/.vim/plugged')
 
-set shell=/bin/bash
+" set shell=/bin/bash
+" let $SHELL = "/usr/bin/fish"
+if executable('fish')
+    " use fish for embedded terminals
+    set shell=fish
+    " use bash for else
+    let $SHELL = 'bash'
+endif
 
 Plug 'editorconfig/editorconfig-vim'
 
@@ -29,7 +36,7 @@ Plug 'heavenshell/vim-pydocstring'
 Plug 'groenewege/vim-less'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'mattn/emmet-vim'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
@@ -48,11 +55,10 @@ Plug 'claco/jasmine.vim'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'peitalin/vim-jsx-typescript'
 
-
-
-Plug 'pycqa/flake8'
-Plug 'hynek/vim-python-pep8-indent'
-Plug 'tell-k/vim-autopep8'
+" Plug 'pycqa/flake8'
+" Plug 'hynek/vim-python-pep8-indent'
+" Plug 'tell-k/vim-autopep8'
+Plug 'raimon49/requirements.txt.vim'
 
 Plug 'fisadev/vim-isort'
 
@@ -68,6 +74,7 @@ Plug 'ekalinin/Dockerfile.vim'
 
 Plug 'stephpy/vim-yaml'
 Plug 'pearofducks/ansible-vim'
+Plug 'xavierchow/vim-swagger-preview'
 
 Plug 'elzr/vim-json'
 
@@ -77,12 +84,24 @@ Plug 'easymotion/vim-easymotion'
 
 Plug 'udalov/kotlin-vim'
 
-Plug 'zxqfl/tabnine-vim'
-Plug 'davidhalter/jedi-vim'
+" Plug 'zxqfl/tabnine-vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'davidhalter/jedi-vim'
+" Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release/remote', 'do': ':UpdateRemotePlugins' }
 
 Plug 'mhinz/vim-startify'
 
 Plug 'ryanoasis/vim-devicons'
+
+Plug 'lifepillar/pgsql.vim'
+
+Plug 'towolf/vim-helm'
+
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 
 call plug#end()
 
@@ -102,6 +121,7 @@ color nord
 " airline
 set laststatus=2
 let g:airline_powerline_fonts = 1
+set statusline^=%{coc#status()}
 
 " list files for open
 set wildmenu
@@ -145,8 +165,8 @@ set incsearch
 
 " ctrl-p
 let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlPMRUFiles' " by default ctrlp opens in mru + files mode
-nnoremap <c-P> :CtrlPMRUFiles<CR>
+" let g:ctrlp_cmd = 'CtrlPMRUFiles' " by default ctrlp opens in mru + files mode
+nnoremap <c-P> :CtrlP<CR>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*.pyc,*/vendor/* " ignore shitty files
 
 " ctrlp on enter, open in a tab. on c-e, open in current.
@@ -157,13 +177,14 @@ let g:ctrlp_prompt_mappings = {
     \ }
 
 " let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden --ignore .git -g ""'
+" let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden --ignore .git -g ""'
+" let g:ctrlp_user_command = 'ag %s -l --hidden -g ""'
 
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_mruf_relative = 1
 
 " nerd tree close tab when it's the only window
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " nerd tree toggle with c-n
 map <C-n> :NERDTreeToggle<CR>
@@ -278,19 +299,28 @@ nmap <leader>lo :lopen<CR>
 let g:airline#extensions#ale#enabled = 1
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'typescript': ['tsserver', 'eslint'],
+\   'typescript': ['eslint'],
 \   'go': ['gofmt', 'goimports'],
-\   'python': ['autopep8', 'isort', 'black'],
+\   'python': ['yapf', 'isort'],
+\   'sql': ['pgformatter'],
+\   'yml': ['yamlfix'],
 \}
-let g:ale_fix_on_save = 0
+
+let g:ale_linters = {
+\   'python': [],
+\}
+
+" \   'python': ['flake8', 'mypy', 'jedils'],
+"
+" to be compatible with coc
+let g:ale_disable_lsp = 1
+
+let g:ale_fix_on_save = 1
 let g:ale_javascript_eslint_options = '--cache'
 let g:nvim_typescript#default_mappings = 1
 let g:ale_set_balloons = 1
 let g:nvim_typescript#type_info_on_hold = 1
-
-
-" map autopep8
-autocmd FileType python map <buffer> <leader>pe :call Autopep8<CR>
+let g:ale_sql_pgformatter_options = '-w 99'
 
 " highlight 100th column
 set colorcolumn=100
@@ -305,14 +335,11 @@ let g:easytags_dynamic_files = 1
 " exclude everything in gitignore when creating tags
 let g:easytags_opts = ['--exclude="@.gitignore"']
 
-" will call isort to sort python imports on <leader>i
-autocmd FileType python map <buffer> <leader>i :Isort<CR>
-
 " will call GoImports to import packages of golang files on <leader>i
 autocmd FileType go map <buffer> <leader>i :GoImports<CR>
 
 " set directory of virtualenvs
-let g:virtualenv_directory = '~/code/python/virtualenvs'
+let g:virtualenv_directory = '~/.virtualenvs/'
 
 " auto activate virtualenv, if there is one active!
 let g:virtualenv_auto_activate = 1
@@ -321,7 +348,7 @@ let g:virtualenv_auto_activate = 1
 :nnoremap <Leader>r :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>
 
 " find word under the cursor in the project using Ag
-:nnoremap <Leader>f :Ack '<C-r><C-w>'<CR>
+" :nnoremap <Leader>f :Ack '<C-r><C-w>'<CR>
 
 " use ag instead of ack for search
 let g:ackprg = 'ag'
@@ -340,7 +367,7 @@ set signcolumn=yes
 " add a space when commenting
 let NERDSpaceDelims=1
 
-let g:golang_goroot = "/usr/local/go"
+" let g:golang_goroot = "/usr/local/go"
 
 " don't fold all codes after each save & gofmt
 let g:go_fmt_experimental = 1
@@ -364,7 +391,7 @@ map <leader>rb :g/^\s*$/d<CR>
 map <leader>rB :g/^\_$\n\_^$/d<CR>
 
 " NERDTree git indicator symbols
-let g:NERDTreeIndicatorMapCustom = {
+let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ "Modified"  : "*",
     \ "Staged"    : "+",
     \ "Untracked" : "-",
@@ -376,6 +403,8 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Ignored'   : "i",
     \ "Unknown"   : "?"
     \ }
+
+let g:NERDTreeGitStatusConcealBrackets = 1
 
 " Enable default mapping of easymotion in normal mode
 nmap s <Plug>(easymotion-overwin-f)
@@ -399,8 +428,108 @@ set undodir=~/.vim/undodir
 set undolevels=1000      " Maximum number of changes that can be undone
 set undoreload=10000     " Maximum number lines to save for undo on a buffer reload
 
-autocmd FileType python let g:jedi#goto_definitions_command = "<C-]>"
+" let g:jedi#goto_command = "<C-]>"
+
 
 " automatically save sessions on close
 let g:startify_session_persistence = 1
 let g:startify_change_to_vcs_root = 1
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+" select snippet suggestions in coc when we press enter
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() :
+                                           \"\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> <C-]> <Plug>(coc-definition)
+autocmd FileType go nmap <C-]> <Plug>(coc-type-definition)
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+nmap <silent> gy <Plug>(coc-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nmap <leader>rn <Plug>(coc-rename)
+nnoremap <silent><nowait> <leader>c  :<C-u>CocAction<cr>
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" so that pgsql handles files with sql extension too
+let g:sql_type_default = 'pgsql'
+
+let g:fzf_preview_lines_command = 'bat --color=always --plain --number --theme=Nord'
+let g:fzf_preview_command = 'bat --color=always --plain {-1} --theme=Nord'
+let g:fzf_preview_floating_window_rate = 0.8
+let g:fzf_preview_filelist_command = 'rg --files --hidden --follow --no-messages -g \!"* *"' " Installed ripgrep
+let g:fzf_preview_preview_key_bindings = 'ctrl-d:preview-page-down,ctrl-u:preview-page-up,?:toggle-preview'
+let g:fzf_preview_use_dev_icons = 1
+
+nmap <Leader>f [fzf-p]
+xmap <Leader>f [fzf-p]
+
+nnoremap <silent> [fzf-p]p     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
+nnoremap <silent> [fzf-p]gs    :<C-u>CocCommand fzf-preview.GitStatus<CR>
+nnoremap <silent> [fzf-p]ga    :<C-u>CocCommand fzf-preview.GitActions<CR>
+nnoremap <silent> [fzf-p]d     :<C-u>CocCommand fzf-preview.CocCurrentDiagnostics<CR>
+nnoremap <silent> [fzf-p]D     :<C-u>CocCommand fzf-preview.CocDiagnostics<CR>
+nnoremap <silent> [fzf-p]b     :<C-u>CocCommand fzf-preview.Buffers<CR>
+nnoremap <silent> [fzf-p]B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
+nnoremap <silent> [fzf-p]o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
+nnoremap <silent> [fzf-p]<C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
+nnoremap <silent> [fzf-p]g;    :<C-u>CocCommand fzf-preview.Changes<CR>
+nnoremap <silent> [fzf-p]/     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+nnoremap <silent> [fzf-p]*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
+nnoremap          [fzf-p]gr    :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
+xnoremap          [fzf-p]gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
+nnoremap <silent> [fzf-p]gg    :<C-u>CocCommand fzf-preview.ProjectGrep . --resume<CR>
+nnoremap <silent> [fzf-p]t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
+nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
+nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>
+
+
+let g:fzf_preview_buffers_jump = 0
+
+let g:python_host_prog = '/home/sazary/.virtualenvs/miare39/bin/python'
+let g:python3_host_prog = '/home/sazary/.virtualenvs/miare39/bin/python'
+
+
+nnoremap n nzz

@@ -6,7 +6,11 @@
 	status = auto
 	branch = auto
 [alias]
+    l = pull
+    sh = push
+    shf = push --force
     co = checkout
+    cob = checkout -b
     st = status
     a = add
     ap = add -p
@@ -17,9 +21,11 @@
     type = cat-file -t
     dump = cat-file -p
 	ci = commit --verbose
+	cia = commit --amend --verbose
 	d = difftool
 	diff = difftool
     mff = merge --no-ff
+    wip = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
 [merge]
 	tool = vimdiff
 [url "https://"]
@@ -36,12 +42,20 @@
 [core]
     pager = less
 	filemode = false
-	editor = vim
-[diff]
-	tool = icdiff
+	editor = nvim
+; [diff]
+	; tool = icdiff
+; [difftool]
+	; prompt = false
+; [difftool "icdiff"]
+    ; cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
 [difftool]
-	prompt = false
-[difftool "icdiff"]
-    cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
+    prompt = true
+[diff]
+    tool = nvimdiff
+[difftool "nvimdiff"]
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [http]
 	postBuffer = 1048576000
+[credential]
+	helper = store
