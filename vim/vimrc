@@ -37,6 +37,9 @@ Plug 'groenewege/vim-less'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'mattn/emmet-vim'
 " Plug 'w0rp/ale'
+Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+
 
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
