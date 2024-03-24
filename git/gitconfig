@@ -1,61 +1,95 @@
 [user]
-	email = soroosh@azary.ir
-	name = sazary
-[color]
-	diff = auto
-	status = auto
-	branch = auto
-[alias]
-    l = pull
-    sh = push
-    shf = push --force
-    co = checkout
-    cob = checkout -b
-    st = status
-    a = add
-    ap = add -p
-    br = branch
-    ll = log -L
-    hist = log --pretty=format:'%Cblue%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)[%an] %Creset' --graph --date=short
-    fhist = log --follow -p
-    type = cat-file -t
-    dump = cat-file -p
-	ci = commit --verbose
-	cia = commit --amend --verbose
-	d = difftool
-	diff = difftool
-    mff = merge --no-ff
-    wip = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
-[merge]
-	tool = vimdiff
-[url "https://"]
-	insteadOf = git://
+  name = sazary
+  email = soroosh@azary.ir
+
 [push]
-	default = current
-# [https]
-# 	proxy = http://localhost:8123
-# [http]
-# 	proxy = http://localhost:8123
-# 	sslverify = false
-[socks]
-	proxy =
+  autoSetupRemote = true
+
+[alias]
+  ap = add -p
+  br = branch
+  brD = branch -D
+  brd = branch -d
+  ci = commit
+  cia = commit --amend
+  ciam = commit --amend -m
+  cl = clone
+  co = checkout
+  cob = checkout -b
+  com = checkout master
+  cp = cherry-pick
+  df = diff
+  dfc = diff --cached
+  l = pull
+  last = log -1 HEAD --stat --pretty=medium
+  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+  ls = log --oneline --decorate --graph --pretty='%C(yellow)%h%Cred%d %Creset%s%C(yellow) %aN %Cblue%ar' --
+  sh = push
+  shf = push --force
+  st = status
+
+[include]
+  path = /Users/sazary/.delta.themes.gitconfig
+
 [core]
-    pager = less
-	filemode = false
-	editor = nvim
-; [diff]
-	; tool = icdiff
-; [difftool]
-	; prompt = false
-; [difftool "icdiff"]
-    ; cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
-[difftool]
-    prompt = true
-[diff]
-    tool = nvimdiff
-[difftool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
-[http]
-	postBuffer = 1048576000
-[credential]
-	helper = store
+  pager = delta
+  editor = nvim
+
+[interactive]
+  diffFilter = delta --color-only --features="gruvmax-fang"
+
+[delta]
+  navigate = true    # use n and N to move between diff sections
+  ; features = gruvbox-dark
+  side-by-side = true
+
+
+
+[delta "gruvmax-fang"]
+    # author: https://github.com/maxfangx
+    # General appearance
+    dark = true
+    syntax-theme = gruvbox-dark
+    # File
+    file-style = "#FFFFFF" bold
+    file-added-label = [+]
+    file-copied-label = [==]
+    file-modified-label = [*]
+    file-removed-label = [-]
+    file-renamed-label = [->]
+    file-decoration-style = "#434C5E" ul
+    file-decoration-style = "#84786A" ul
+    # No hunk headers
+    hunk-header-style = omit
+    # Line numbers
+    line-numbers = true
+    line-numbers-left-style = "#84786A"
+    line-numbers-right-style = "#84786A"
+    line-numbers-minus-style = "#A02A11"
+    line-numbers-plus-style = "#479B36"
+    line-numbers-zero-style = "#84786A"
+    line-numbers-left-format = " {nm:>3} │"
+    line-numbers-right-format = " {np:>3} │"
+    # Diff contents
+    inline-hint-style = syntax
+    minus-style = syntax "#330011"
+    minus-emph-style = syntax "#80002a"
+    minus-non-emph-style = syntax auto
+    plus-style = syntax "#001a00"
+    plus-emph-style = syntax "#003300"
+    plus-non-emph-style = syntax auto
+    whitespace-error-style = "#FB4934" reverse
+    # Commit hash
+    commit-decoration-style = normal box
+    commit-style = "#ffffff" bold
+    # Blame
+    blame-code-style = syntax
+    blame-format = "{author:>18} ({commit:>8}) {timestamp:<13} "
+    blame-palette = "#000000" "#1d2021" "#282828" "#3c3836"
+    # Merge conflicts
+    merge-conflict-begin-symbol = ⌃
+    merge-conflict-end-symbol = ⌄
+    merge-conflict-ours-diff-header-style = "#FABD2F" bold
+    merge-conflict-theirs-diff-header-style = "#FABD2F" bold overline
+    merge-conflict-ours-diff-header-decoration-style = ''
+    merge-conflict-theirs-diff-header-decoration-style = ''
